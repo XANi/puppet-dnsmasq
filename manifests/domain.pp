@@ -1,9 +1,8 @@
 # Create a dnsmasq domain (--domain).
 define dnsmasq::domain (
   $subnet = undef,
-  $local  = false,
+  Boolean $local  = false,
 ) {
-  validate_bool($local)
   include dnsmasq
 
   $local_real = $local ? {

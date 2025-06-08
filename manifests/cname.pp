@@ -1,10 +1,7 @@
 # Create an dnsmasq cname record (--cname).
 define dnsmasq::cname (
-  $hostname,
+  String[1,255]$hostname,
 ) {
-  validate_slength($name,255)     # hostnames cannot be longer
-  validate_slength($hostname,255) # hostnames cannot be longer
-
   include dnsmasq
 
   concat::fragment { "dnsmasq-cname-${name}":
