@@ -1,13 +1,13 @@
 # Detect OS, set os-specific parameters
 class dnsmasq::params {
-  validate_re($::osfamily,[
-    '^Darwin$',
-    '^Debian$',
-    '^DragonFly$',
-    '^FreeBSD$',
-    '^RedHat$',
-  ],"Module ${module_name} is not supported on ${::operatingsystem}")
-
+  case $::osfamily {
+    'Darwin',
+    'Debian',
+    'DragonFly',
+    'FreeBSD',
+    'RedHat': {}
+    default: { fail("Module ${module_name} is not supported on ${::operatingsystem}") }
+  }
   $dnsmasq_conffile = $::osfamily ? {
     'Darwin'                => '/opt/local/etc/dnsmasq.conf',
     /^(DragonFly|FreeBSD)$/ => '/usr/local/etc/dnsmasq.conf',

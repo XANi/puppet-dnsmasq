@@ -3,10 +3,8 @@ define dnsmasq::mx (
   # allow for duplicate "mx-host=<name>,..." entries
   $mx_name = $name,
   $hostname = undef,
-  $preference = undef,
+  Variant[Undef,String['^[0-9]+$'] $preference = undef,
 ) {
-  if undef != $preference { validate_re($preference,'^[0-9]+$') }
-
   include dnsmasq
 
   $hostname_real = $hostname ? {

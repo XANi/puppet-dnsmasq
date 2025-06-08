@@ -7,7 +7,7 @@ class dnsmasq (
   $auth_zone                = undef,
   $bogus_priv               = true,
   $cache_size               = 1000,
-  $config_hash              = {},
+  Hash $config_hash         = {},
   $dhcp_boot                = undef,
   $dhcp_leasefile           = undef,
   $dhcp_no_override         = false,
@@ -25,11 +25,11 @@ class dnsmasq (
   $expand_hosts             = true,
   $interface                = undef,
   $listen_address           = undef,
-  $local_ttl                = undef,
+  Variant[Undef,Integer[0]] $local_ttl                = undef,
   $manage_tftp_root         = false,
-  $max_ttl                  = undef,
-  $max_cache_ttl            = undef,
-  $neg_ttl                  = undef,
+  Variant[Undef,Integer[0]] $max_ttl                  = undef,
+  Variant[Undef,Integer[0]] $max_cache_ttl            = undef,
+  Variant[Undef,Integer[0]] $neg_ttl                  = undef,
   $no_dhcp_interface        = undef,
   $no_hosts                 = false,
   $no_negcache              = false,
@@ -42,7 +42,7 @@ class dnsmasq (
   $run_as_user              = undef,
   $save_config_file         = true,
   $service_enable           = true,
-  $service_ensure           = 'running',
+  Pattern[/^(running|stopped)/]  $service_ensure           = 'running',
   $strict_order             = true,
   $tftp_root                = '/var/lib/tftpboot',
 ) inherits dnsmasq::params {
@@ -67,13 +67,6 @@ class dnsmasq (
     $reload_resolvconf,
     $restart
   )
-  validate_hash($config_hash)
-  validate_re($service_ensure,'^(running|stopped)$')
-  if undef != $auth_ttl      { validate_re($auth_ttl,'^[0-9]+') }
-  if undef != $local_ttl     { validate_re($local_ttl,'^[0-9]+') }
-  if undef != $neg_ttl       { validate_re($neg_ttl,'^[0-9]+') }
-  if undef != $max_ttl       { validate_re($max_ttl,'^[0-9]+') }
-  if undef != $max_cache_ttl { validate_re($max_cache_ttl,'^[0-9]+') }
   if undef != $listen_address and !is_ip_address($listen_address) {
     fail("Expect IP address for listen_address, got ${listen_address}")
   }
