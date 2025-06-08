@@ -1,13 +1,11 @@
 # Configure the DNS server to query sub domains to external DNS servers
 # (--rev-server).
 define dnsmasq::dnsrevserver (
-  $ip,
+  Stdlib::IP::Address $ip,
   $netmask,
-  $subnet,
+  Stdlib::IP::Address $subnet,
   $port = undef,
 ) {
-  if !is_ip_address($ip) { fail("Expect IP address for ip, got ${ip}") }
-  if !is_ip_address($subnet) { fail("Expect IP address for subnet, got ${subnet}") }
 
   $port_real = $port ? {
     undef   => '',

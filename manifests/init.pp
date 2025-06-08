@@ -24,7 +24,7 @@ class dnsmasq (
   Boolean $enable_tftp              = false,
   Boolean $expand_hosts             = true,
   $interface                = undef,
-  $listen_address           = undef,
+  Variant[Undef,Stdlib::IP::Address] $listen_address           = undef,
   Variant[Undef,Integer[0]] $local_ttl                = undef,
   Boolean $manage_tftp_root         = false,
   Variant[Undef,Integer[0]] $max_ttl                  = undef,
@@ -48,10 +48,6 @@ class dnsmasq (
 ) inherits dnsmasq::params {
 
   ## VALIDATION
-
-  if undef != $listen_address and !is_ip_address($listen_address) {
-    fail("Expect IP address for listen_address, got ${listen_address}")
-  }
 
   ## CLASS VARIABLES
 

@@ -3,11 +3,10 @@
 define dnsmasq::dhcpstatic (
 
   Pattern[/^[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}$/] $mac,
-  $ip,
+  Stdlib::IP::Address $ip,
 ) {
   $mac_real = downcase($mac)
 
-  if !is_ip_address($ip) { fail("Expect IP address for ip, got ${ip}") }
   include dnsmasq
 
   concat::fragment { "dnsmasq-staticdhcp-${name}":

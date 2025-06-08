@@ -1,11 +1,10 @@
 # Configure the DNS server to query sub domains to external DNS servers
 # (--server).
 define dnsmasq::dnsserver (
-  $ip,
+  Stdlib::IP::Address $ip,
   $domain = undef,
   $port = undef,
 ) {
-  if !is_ip_address($ip) { fail("Expect IP address for ip, got ${ip}") }
 
   $domain_real = $domain ? {
     undef   => '',

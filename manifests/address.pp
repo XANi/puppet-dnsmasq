@@ -1,8 +1,7 @@
 # Create a dnsmasq A record (--address).
 define dnsmasq::address (
-  $ip,
+  Stdlib::IP::Address $ip,
 ) {
-  if !is_ip_address($ip) { fail("Expect IP address for ip, got ${ip}") }
 
   include dnsmasq
 
